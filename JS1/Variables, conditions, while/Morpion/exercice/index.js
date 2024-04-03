@@ -70,8 +70,8 @@ let jeu = [
 
 let symboles = ['O', 'X'];
 
-let joueur1 = "";
-let joueur2 = "";
+let joueur1 = '';
+let joueur2 = '';
 let NumberRow = 0;
 let NumberColumn = 0;
 let JoueurTour = "";
@@ -83,69 +83,101 @@ let tour = 0
 
 /**************************morpion*****************************/
 function morpion(JoueurTour) {
-  console.log(jeu);
+  
+
   NumberRow = prompt('choisir une ligne');
 
   while (NumberRow < 0 || NumberRow > 2) {
     alert('erreur de saisie, recommencez');
     NumberRow = prompt('choisir une ligne');
   }
+
   NumberColumn = prompt('choisir une colonne');
   while (NumberColumn < 0 || NumberColumn > 2) {
     alert('erreur de saisie, recommencez');
-    NumberRow = prompt('choisir une ligne');
+    NumberColumn = prompt('choisir une colonne');
   }
+
   while (jeu[NumberRow][NumberColumn] !== null) {
-    alert('la case est déjà pleine')
+    alert('la case est déjà pleine');
+    NumberRow = prompt('choisir une ligne');
     while (NumberRow < 0 || NumberRow > 2) {
       alert('erreur de saisie, recommencez');
       NumberRow = prompt('choisir une ligne');
     }
+
     NumberColumn = prompt('choisir une colonne');
     while (NumberColumn < 0 || NumberColumn > 2) {
       alert('erreur de saisie, recommencez');
-      NumberRow = prompt('choisir une ligne');
+      NumberColumn = prompt('choisir une colonne');
     }
+
   }
   jeu[NumberRow][NumberColumn] = JoueurTour;
-  console.log(jeu);
+
 
 }
 
 /**************vérification victoire******************/
 
-function victoire(JoueurTour) {
+function victoire() {
   let CheckRow = 0
   let CheckColumn = 0;
   let result = 0;
 
   for (CheckRow = 0; CheckRow <= 2; CheckRow++) {
+    console.log(jeu[CheckRow]);
 
-    if (jeu[CheckRow] === [JoueurTour, JoueurTour, JoueurTour]) {
-      return true;
-      console.log(jeu[CheckRow] === [JoueurTour, JoueurTour, JoueurTour]);
+    for (CheckColumn = 0; CheckColumn <= 2; CheckColumn++) {
+      if (jeu[CheckRow][CheckColumn] === JoueurTour) {
+        console.log
+        result++;
+      }
+      else {
+        break;
+      }
+
     }
 
   }
+  if (result === 3) {
+    alert('ligne');
+    return true;
+
+  }
+
+
+
+
   for (CheckColumn = 0; CheckColumn <= 2; CheckColumn++) {
 
     if (jeu[0][CheckColumn] === JoueurTour && jeu[1][CheckColumn] === JoueurTour && jeu[2][CheckColumn] === JoueurTour) {
+
+      alert('colonne');
       return true;
 
     }
   }
 
   if (jeu[0][0] === JoueurTour && jeu[1][1] === JoueurTour && jeu[2][2] === JoueurTour) {
+
+    console.log('diago1');
     return true;
+
   }
   else if (jeu[0][2] === JoueurTour && jeu[1][1] === JoueurTour && jeu[2][0] === JoueurTour) {
+
+    console.log('diago2');
     return true;
+
   }
   else {
+    console.log('else');
     return false;
+
   }
 
-
+alert(`victoire de ${JoueurTour}`);
 }
 
 
@@ -154,9 +186,10 @@ function victoire(JoueurTour) {
 function choixSymbole() {
 
   joueur1 = prompt('veuillez choisir votre symbole X ou O');
-  while (joueur1 !== symboles[0] || joueur1 != symboles[1]) {
+  while (joueur1 !== 'X' && joueur1 !== 'O') {
     alert('erreur de saisie, tapez X ou O');
     joueur1 = prompt('veuillez choisir votre symbole X ou O');
+    console.log(joueur1)
   }
   if (joueur1 === 'X') {
     joueur2 = 'O';
@@ -169,32 +202,43 @@ function choixSymbole() {
 
 
 /************ tours********************/
+
+
 choixSymbole();
 
-function tourDeJeu(tour) {
+for (let i = 0; i < 9; i++) {
 
-  while (victoire() === false) {
-
-    if (tour % 2 === 0) {
-      JoueurTour = joueur1
-
-    }
-    else {
-      JoueurTour = joueur2;
-
-    }
+  if (tour % 2 === 0) {
+    alert('tour de joueur1');
+    JoueurTour = joueur1;
     morpion(JoueurTour);
-    victoire(JoueurTour);
+    if(victoire() === true){
+      alert(JoueurTour+'a gagné la partie');
+      break;
+    }
 
   }
+  else {
+    JoueurTour = joueur2;
+    alert('tour de joueur2');
+    morpion(JoueurTour);
+    if(victoire() === true){
+      alert(JoueurTour+'a gagné la partie');
+      break;
+    }
+    
+    
+  }
+  tour++;
+  
+
 
 }
-if (JoueurTour === joueur1) {
-  alert('joueur1 a gagné la partie');
+if(tour === 8){
+  alert('Egalité, fin de la partie');
 }
-else {
-  alert('joueur2 a gagné la partie');
-}
+
+
 
 
 
@@ -202,9 +246,16 @@ else {
 /*****************programme général********************/
 
 
+/*
+tourDeJeu(tour);
 
-
-
+if (JoueurTour === joueur1) {
+  alert('joueur1 a gagné la partie');
+}
+else {
+  alert('joueur2 a gagné la partie');
+}
+*/
 
 
 
