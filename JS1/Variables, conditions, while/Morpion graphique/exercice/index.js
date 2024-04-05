@@ -77,21 +77,134 @@ let joueur2 = '';
 /**************************************************************/
 /*                        Main Program                        */
 /**************************************************************/
+function CaseVide(text) {
 
+  if (text === 'X' || text === 'O') {
+
+    alert('la case est pleine');
+
+  }
+  else {
+    return true;
+  }
+
+
+
+
+}
+
+
+function victoire(joueurTour) {
+let caseJeu = document.querySelectorAll('.grid div');
+
+
+  if (((caseJeu[0].innerText === joueurTour &&
+    caseJeu[1].innerText === joueurTour &&
+    caseJeu[2].innerText === joueurTour)) 
+    ||
+    ((caseJeu[3].innerText === joueurTour &&
+    caseJeu[4].innerText === joueurTour &&
+    caseJeu[5].innerText === joueurTour))
+    ||
+    ((caseJeu[6].innerText === joueurTour &&
+    caseJeu[7].innerText === joueurTour &&
+    caseJeu[8].innerText === joueurTour))
+
+  ) {
+    alert('Joueur' +joueurTour+ ' a gagné la partie');
+  }
+  else if(((caseJeu[0].innerText === joueurTour &&
+    caseJeu[3].innerText === joueurTour &&
+    caseJeu[6].innerText === joueurTour)) 
+    ||
+    ((caseJeu[1].innerText === joueurTour &&
+    caseJeu[4].innerText === joueurTour &&
+    caseJeu[7].innerText === joueurTour))
+    ||
+    ((caseJeu[2].innerText === joueurTour &&
+    caseJeu[5].innerText === joueurTour &&
+    caseJeu[8].innerText === joueurTour))
+    )
+    {
+      alert('Joueur' +joueurTour+ ' a gagné la partie');
+    }
+  
+    else if(
+       ((caseJeu[0].innerText === joueurTour &&
+    caseJeu[4].innerText === joueurTour &&
+    caseJeu[8].innerText === joueurTour)) ||
+    ((caseJeu[2].innerText === joueurTour &&
+    caseJeu[4].innerText === joueurTour &&
+    caseJeu[6].innerText === joueurTour))
+      
+      ){
+        alert('Joueur' +joueurTour+ ' a gagné la partie');
+      }
+
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 
   let caseJeu = document.querySelectorAll('.grid div');
+  
+
+
   console.log(caseJeu);
-  event.preventDefault();
+  
+  let demarrer = document.querySelector('.button');
+  console.log(demarrer);
 
-  caseJeu.forEach((element) => element.addEventListener('click', function() {
+  demarrer.addEventListener('click', function() {
+    
+    caseJeu.forEach((element) => element.innerText= '');
+    
+    console.log(demarrer);
+    
+    
+    let joueur1 = 'X';
+    let joueur2 = 'O';
+    let tour = 0;
+    let joueurTour = joueur1;
 
+
+    caseJeu.forEach((element) => element.addEventListener('click', function() {
+    
       console.log(element);
+      let text = element.innerText;
+      console.log(element.innerText);
+      console.log(element.className);
+      if (tour%2 === 0) {
+
+        joueurTour = joueur1;
+        if(CaseVide(text) === true){
+          
+          element.innerText = 'X';
+          victoire(joueurTour);
+          tour++;
+          
+        }
+
+      }
+
+      else  {
+          joueurTour = joueur2;
+          if(CaseVide(text) === true){
+          
+          element.innerText = 'O';
+          victoire(joueurTour);
+          tour++;
+          
+        }
+      }
+      
+      
+
+      
+
+    }));
 
 
-
-  }));
+  })
 
 
 });
