@@ -1,0 +1,38 @@
+:root {
+  --primary-color: #D7DAE5;
+  --secondary-color: #B9CDDA;
+  --terce-color: #A6D8D4;
+  --text-color: #fff;
+}
+
+main {
+    width: 50vw;
+    margin: auto;
+}
+
+form {
+    margin: 5em;
+    
+    
+}
+
+fieldset {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 5em;
+}
+
+fieldset input {
+    flex-basis: 1em;
+    
+    
+}
+
+.avatar{
+    width: 5em;
+    border-radius: 50%;
+}
