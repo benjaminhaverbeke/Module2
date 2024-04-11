@@ -1,0 +1,64 @@
+IMPORTANT : Ce mini projet est complexe
+Pour cela je t'invite fortement à suivre les étapes une à une
+
+Etape 1 : Afficher dynamiquement la liste de produits de la collection productsCollection
+Ecrire une fonction displayProducts pour afficher les produits dans le tableau
+- Récupérer l'élément <tbody>
+- Pour chaque élément de la collection, créer et ajouter un <tr> à l'élément <tbody>
+
+Etape 2 : Gérer l'affichage de la modale
+- Lorsque l'utilisateur clique sur le bouton "Ajouter", afficher la modale
+- Lorsque l'utilisateur clique sur la croix en haut à droite de la modale, la fermer
+
+Etape 3 : Ajouter un nouveau produit dans la collection via un formulaire
+Lorsque l'utilisateur clique sur le bouton "Enregistrer" du formulaire dans la modale
+- Récupérer la saisie de l'utilisateur pour le nom du produit
+- Générer un identifiant unique (par exemple, utiliser la taille de la collection)
+- Créer le produit (cad un objet avec les mêmes propriétés que ceux de la collection)
+NOTE : pour l'image, mettre une chaine vide
+- Ajouter le produit à la collection
+- Masquer la modale
+- Rafraichir l'affichage
+
+Etape 4 : Supprimer un produit de la collection
+- Ajouter un bouton "Supprimer" à la fin de chaque <tr>
+- Lorsque l'utilisateur clique sur le bouton "Supprimer"
+    -> Supprimer le produit de la collection
+    -> Rafraichir l'affichage
+ASTUCE : pour gérer le passage de l'identifiant du produit entre le tableau HTML et le JS,
+utiliser les dataset : https://developer.mozilla.org/fr/docs/Web/API/HTMLElement/dataset
+
+Etape 5 : Rechercher un produit
+- Lorsque l'utilisateur saisie quelque chose dans le champ de recherche et clique sur le bouton "Rechercher"
+  -> Récupérer (avec fetch) les produits via l'url : https://world.openfoodfacts.org/api/v2/search?categories_tags=
+     suivi de la valeur saisie dans le champ texte à côté du bouton
+
+    Exemple : si l'utilisateur saisi toto dans le champ, l'url sera 
+    https://world.openfoodfacts.org/api/v2/search?categories_tags=toto
+
+  IMPORTANT : Nombre de requêtes sur cette URL limitée à 100
+
+  -> Les stocker dans productsCollection
+  -> Rafraichir l'affichage
+
+Etape 6 : Editer un produit
+- Ajouter un bouton "Modifier" à la fin de chaque <tr>
+- Lorsque l'utilisateur clique sur le bouton "Modifier"
+  -> Afficher la modale
+  -> Remplir les champs id et nom du produit avec les données du produit
+- Lorsque l'utilisateur ferme la modale et ensuite clique sur le bouton "Ajouter",
+  -> Vider les champs du formulaire
+
+Etape 7 : Modifier un produit
+Lorsque l'utilisateur clique sur le bouton "Enregistrer" du formulaire dans la modale
+- Récupérer les valeurs des champs id et nom du produit
+- Modifier le produit dans la collection
+- Masquer la modale
+- Rafraichir l'affichage
+
+Etape 8 : Gérer le passage de la modale entre l'ajout et la modification
+Problématique : lorsque j'édite un produit, il est aussi ajouté et vice-versa.
+- Lors de l'ajout et de la modification,
+  supprimer les listener sur le bouton "Enregistrer" du formulaire avant de fermer la modale
+- Lorsque l'utilisateur clique sur le bouton "x" pour fermer la modale,
+  supprimer les listener sur le bouton "Enregistrer" du formulaire avant de fermer la modale
