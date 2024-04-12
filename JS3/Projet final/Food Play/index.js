@@ -107,62 +107,118 @@ let SaveButton = document.querySelector('.js-save-button');
 let InputSearch = document.querySelector('#productNameId');
 
 let tbody = document.querySelector('tbody');
-let form = document.querySelector('.js-form-modale form');
 
-const ApiUrl = "https://world.openfoodfacts.org/api/v2/search?categories_tags="
+
+const ApiUrl = "https://world.openfoodfacts.org/api/v2/search?categories_tags=";
 
 let SearchButton = document.querySelector('.js-search-products');
 
 let modalIDinput = document.querySelector('#productID');
-let labelID = document.querySelector('#labelID');
+
 
 /*******fonctions*****************/
 
 function ModifyModal() {
-
+  SaveButton.removeEventListener('click', AddProduct);
   let modifyButtons = document.querySelectorAll('.modify');
   modifyButtons.forEach((Modifyelement, index) => Modifyelement.addEventListener('click', function() {
+    //on applique une écoute à tous les boutons modifier
+    //on affiche le label de l'id dans la modale et l'input de l'id qui etait caché
+    //on enlève l'écoute déjà présente sur la modale avec "Ajouter"
 
 
-    modalIDinput.type = "text";
-    labelID.style.display= "block";
-    
-    
+
+
+    //on recupere l'id le plus proche cad productElement
+    const productId = Modifyelement.closest('.productElement').dataset.id;
+
+    //on attribut a savebutton l'id;
+    SaveButton.dataset.id = productId;
+    console.log(productId);
+
+    //on ouvre la modale
     ouvrirModal();
-    SaveButton.value = "Modify";
-    SaveButton.removeEventListener('click', AddProduct);
-    
-    SaveButton.addEventListener('click', function(){
-      event.preventDefault();
-      
-      
-      
-    
-    let ModifyName = InputSearch.value;
-    let ModifyId = modalIDinput.value;
-    Modifyelement.product_name = ModifyName;
-    Modifyelement._id = ModifyId; 
 
-      console.log(ModifyName);
-      console.log(ModifyId);
-      console.log(Modifyelement.product_name);
-      
-      const productId = Modifyelement.closest('.productElement').dataset.id;
-      console.log(productId);
-      let productTarget  = document.querySelector(`tr[data-id="${productId}"]`);
-      productTarget.dataset.id = ModifyId;
-      
-      productTarget.innerText = ModifyName;
-      fermerModal();
-      labelID.style.display= "none";
-      modalIDinput.type = "hidden";
-    })
+
+
+    //on ajoute une écoute au click sur cette nouvelle fonction
+    SaveButton.addEventListener('click', function() {
+      event.preventDefault();
+      SaveModify(Modifyelement, productId);
+
+
+    });
+    SaveButton.removeEventListener('click', SaveModify);
   }));
 
-
+  InputSearch.value = "";
+  modalIDinput.value = "";
 }
 
+function SaveModify(Modifyelement, productId) {
 
+  //on empeche la page de se rafraichir ??
+
+  //récupérer les valeurs des champs du form
+  let ModifyName = InputSearch.value;
+
+
+  //récuperer l'id dataset de l'element du DOM le plus proche (closest) de l'élément modifier
+
+  //cherche dans le tableau productsCollection, l'index de l'objet qui possede le meme id que productId
+  let productIndex = productsCollection.findIndex(p => p._id === productId);
+  console.log(productIndex);
+
+  //selectionne le tr avec le même id dataset que productId
+  let productTarget = document.querySelector(`tr[data-id="${productId}"]`);
+
+
+  // créer un objet sur le modèle des objets de productsCollection {...}
+  //puis lui change les propriétés avec les nouvelles valeurs
+  if (productIndex !== -1) {
+    let modifiedProduct = { ...productsCollection[productIndex] };
+    modifiedProduct.product_name = ModifyName;
+
+
+    console.log(modifiedProduct)
+    //remplace l'ancien objet dans le tableau par le nouvel objet avec les nouvelles valeurs
+    productsCollection[productIndex] = modifiedProduct;
+
+    console.log(productsCollection)
+  }
+  else {
+
+    console.log('product not found');
+
+  }
+
+
+
+
+  //on selectionne le premier td qui a le nom hérité de l'objet
+  let td0select = productTarget.querySelector('td:nth-child(1)');
+  console.log(td0select);
+
+  //on change aussi le dataset id de l'element;
+  //on crée un nouveau td
+  let newtd = document.createElement('td');
+
+  //il prend le nouveau nom du champ comme text
+  newtd.innerText = ModifyName;
+
+  //on remplace le premier td du nom par le nouveau td avec le nom modifié
+  productTarget.replaceChild(newtd, td0select);
+
+  console.log(productTarget);
+
+  console.log(Modifyelement.event);
+
+  //on ferme la modale
+  fermerModal();
+
+
+
+};
 
 
 
@@ -171,48 +227,60 @@ function deletebutton() {
 
 
   let supButton = document.querySelectorAll('.sup');
-  let productList = document.querySelectorAll('.productElement');
-  supButton.forEach((element, index) => element.addEventListener('click', function() {
 
-    let productID = productList[index].dataset.id;
-    productList[index].remove();
+  supButton.forEach((element, index) => element.addEventListener('click', function() {
+    //chope l'id du productelement le plus proche;
+    const productId = element.closest('.productElement').dataset.id;
+    const productElement = element.closest('.productElement')
+    let productIndex = productsCollection.findIndex(p => p._id === productId);
+    if (productsCollection[productIndex]._id === productId) {
+
+      console.log(productId);
+
+      productsCollection.splice(productIndex, 1);
+      productElement.remove();
+
+
+    }
+
 
 
 
   }));
 
 }
-function clean(){
-  
- productsCollection = [];
- let productsremove = document.querySelectorAll('.productElement');
- for (let i = 0; i < productsremove.length; i++){
-   
-   productsremove[i].remove();
-   
-   
- }
- 
- 
- 
+
+function clean() {
+
+  productsCollection = [];
+  let productsremove = document.querySelectorAll('.productElement');
+  for (let i = 0; i < productsremove.length; i++) {
+
+    productsremove[i].remove();
+
+
+  }
+
+
+
 }
 
 
 
 function SearchProducts() {
-  
+
   clean();
   let SearchInput = document.querySelector('.js-search-query').value;
 
 
-fetch(ApiUrl + SearchInput)
+  fetch(ApiUrl + SearchInput)
     .then((response) => {
       console.log(response);
       if (response.ok) {
 
         response.json().then((data) => {
 
-           
+
           let ApiProductList = data.products
 
           ApiProductList.forEach((elementProduct, index) => {
@@ -229,9 +297,9 @@ fetch(ApiUrl + SearchInput)
 
             productsCollection.push(product);
           });
-          
-          
-          
+
+
+
           displayProducts();
           deletebutton();
           ModifyModal();
@@ -259,8 +327,9 @@ function displayProducts() {
     let tr = document.createElement('tr');
     tr.classList = "productElement";
     tbody.appendChild(tr);
-
-    tr.innerText = productsCollection[i].product_name;
+    let td0 = document.createElement('td');
+    tr.appendChild(td0);
+    td0.innerText = productsCollection[i].product_name;
     let td = document.createElement('td');
     tr.appendChild(td);
     let img = document.createElement('img');
@@ -310,9 +379,9 @@ function fermerModal() {
 }
 
 function AddProduct() {
-  
-  
-  
+
+
+
   SaveButton.value = "Add";
   let search = InputSearch.value;
   console.log(search);

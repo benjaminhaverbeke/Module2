@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <input type="text" name="search" class="js-search-query">
+  <button class="js-search-products">Rechercher</button>
+  <button class="js-add-product">Ajouter</button>
+  <div class="js-modale-container modale-container">
+    <div class="js-form-modale modale">
+      <form name="productForm" method="post">
+        <label for="productNameId">Nom produit</label>
+        <input type="text" name="productName" id="productNameId" />
+        <input type="hidden" name="id" />
+        <button class="js-save-button">Enregistrer</button>
+      </form>
+      <button class="js-close-button">x</button>
+    </div>
+  </div>
+  <table class="js-products-list">
+    <thead>
+      <th>Nom produit</th>
+      <th>Image produit</th>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script language="javascript" type="text/javascript" src="index.js"></script>
+</body>
+</html>

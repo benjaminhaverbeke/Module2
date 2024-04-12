@@ -1,0 +1,42 @@
+.modale-container {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modale {
+  position: relative;
+  display: flex;
+  margin: auto;
+  background-color: #fff;
+  padding: 2em;
+  border-radius: 0.5em;
+  box-shadow: 0.5em 0.5em 2em rgba(0,0,0,0.5)
+}
+
+.js-close-button {
+  content: 'x';
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  cursor: pointer;
+}
+
+.modale form {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.modale form > input {
+  width: 100%;
+  height: 2em;
+}
+
+.visible {
+  display: flex;
+}
